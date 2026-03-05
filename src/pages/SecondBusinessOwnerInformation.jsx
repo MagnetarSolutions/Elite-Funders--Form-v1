@@ -22,22 +22,26 @@ const US_STATES = [
 
 export default function BusinessOwnerInformation() {
   const navigate = useNavigate();
-  const { secondBusinessOwner, setStepData } = useFormStore();
+  const { secondBusinessOwner, businessOwner, setStepData } = useFormStore();
 const [isVerifying, setIsVerifying] = useState(false);
   const [popup, setPopup] = useState({
   show: false,
   message: "",
 });
+
 useAutoSave({
   enabled: true,
   step: "businessOwner",
 });
+
 const showPopup = (message) => {
   setPopup({ show: true, message });
   setTimeout(() => {
     setPopup({ show: false, message: "" });
   }, 6000);
 };
+
+
 const fieldRefs = {
   "Second Business Owner First Name": useRef(null),
   "Second Business Owner Last Name": useRef(null),
@@ -154,11 +158,23 @@ const validateField = (field, value, form) => {
       if (value && !zipRegex.test(value)) return "ZIP must be 5 digits";
       return "";
 
+    // case "Second Business Owner Ownership %":
+    //   const ownership = Number(value);
+    //   if (value && (isNaN(ownership) || ownership < 0 || ownership > 100))
+    //     return "Ownership must be between 0 and 100";
+    //   return "";
     case "Second Business Owner Ownership %":
-      const ownership = Number(value);
-      if (value && (isNaN(ownership) || ownership < 0 || ownership > 100))
-        return "Ownership must be between 0 and 100";
-      return "";
+  const ownership = Number(value);
+  const firstOwnerPercent = Number(businessOwner?.["Ownership %"] || 0);
+  const remainingOwnership = 100 - firstOwnerPercent;
+
+  if (value && (isNaN(ownership) || ownership <= 0))
+    return "Ownership must be greater than 0";
+
+  if (ownership > remainingOwnership)
+    return `Second owner cannot exceed ${remainingOwnership}%`;
+
+  return "";
 
     case "Second Business Owner Date of Birth":
       if (value && !isAdult(value)) return "Must be at least 18";
@@ -240,10 +256,21 @@ const setField = (field, value) => {
   if (!zipRegex.test(form["Second Business Owner Zip"]))
     e["Second Business Owner Zip"] = "ZIP must be 5 digits";
 
-  const ownership = Number(form["Second Business Owner Ownership %"]);
-  if (isNaN(ownership) || ownership < 0 || ownership > 100)
-    e["Second Business Owner Ownership %"] = "Ownership must be between 0 and 100";
+  // const ownership = Number(form["Second Business Owner Ownership %"]);
+  // if (isNaN(ownership) || ownership < 0 || ownership > 100)
+  //   e["Second Business Owner Ownership %"] = "Ownership must be between 0 and 100";
 
+  const ownership = Number(form["Second Business Owner Ownership %"]);
+const firstOwnerPercent = Number(businessOwner?.["Ownership %"] || 0);
+const remainingOwnership = 100 - firstOwnerPercent;
+
+if (isNaN(ownership) || ownership <= 0) {
+  e["Second Business Owner Ownership %"] = "Ownership must be greater than 0";
+} 
+else if (ownership > remainingOwnership) {
+  e["Second Business Owner Ownership %"] =
+    `Second owner cannot exceed ${remainingOwnership}%`;
+}
   if (!dobRegex.test(form["Second Business Owner Date of Birth"]))
     e["Second Business Owner Date of Birth"] = "Use MM/DD/YYYY";
   else if (!isAdult(form["Second Business Owner Date of Birth"]))
