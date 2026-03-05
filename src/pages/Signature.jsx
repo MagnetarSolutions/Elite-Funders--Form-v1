@@ -8,7 +8,7 @@ import { useFormStore } from "@/store";
 import ProgressBar from "@/components/ProgressBar";
 import { useAutoSave } from "@/hooks/AutoSave";
 import { triggerCheckpoint } from "@/store/triggercheckpoints";
-import { base64ToFile } from "@/utils/base64ToFile";
+import { base64ToFile } from "@/utils/base64toFile";
 
 export default function Signature() {
   const navigate = useNavigate();
