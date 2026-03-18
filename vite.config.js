@@ -26,7 +26,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://03fd-154-57-198-10.ngrok-free.app",
+        target: "https://magnetarsolutions.pythonanywhere.com",
         changeOrigin: true,
         secure: false,
         headers: {
