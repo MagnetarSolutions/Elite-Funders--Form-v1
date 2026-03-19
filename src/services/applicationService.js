@@ -29,7 +29,7 @@
 //const BASE_URL = process.env.VITE_API_URL;
 
 export async function resumeApplicationByEmail(email) {
-  const url = "https://magnetarsolutions.pythonanywhere.com/api/resume?email=${encodeURIComponent(email)}";
+  const url = `https://magnetarsolutions.pythonanywhere.com/api/resume?email=${encodeURIComponent(email)}`;
 
   const res = await fetch(url, {
     method: "GET",
