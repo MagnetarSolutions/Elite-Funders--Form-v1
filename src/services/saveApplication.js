@@ -22,11 +22,12 @@
 // const BASE_URL = "/api";
 
 // To this:
-const BASE_URL = process.env.VITE_API_URL;
+
+//const BASE_URL = process.env.VITE_API_URL;
 
 export async function saveApplication(payload) {
   try {
-    await fetch(`${BASE_URL}/api/save`, {
+    await fetch("https://magnetarsolutions.pythonanywhere.com/api/save", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
