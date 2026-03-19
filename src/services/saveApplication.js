@@ -22,11 +22,11 @@
 // const BASE_URL = "/api";
 
 // To this:
-const BASE_URL = import.meta.env.VITE_API_URL + "/api";
+const BASE_URL = process.env.VITE_API_URL;
 
 export async function saveApplication(payload) {
   try {
-    await fetch(`${BASE_URL}/save`, {
+    await fetch(`${BASE_URL}/api/save`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

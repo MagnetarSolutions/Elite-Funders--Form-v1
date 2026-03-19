@@ -25,10 +25,10 @@
 // const BASE_URL = "/api";
 
 // To this:
-const BASE_URL = import.meta.env.VITE_API_URL + "/api";
+const BASE_URL = process.env.VITE_API_URL;
 
 export async function resumeApplicationByEmail(email) {
-  const url = `${BASE_URL}/resume?email=${encodeURIComponent(email)}`;
+  const url = `${BASE_URL}/api/resume?email=${encodeURIComponent(email)}`;
 
   const res = await fetch(url, {
     method: "GET",
